@@ -1,66 +1,58 @@
 package com.example.quiz.controller;
 
-import com.example.quiz.model.Question;
+
+import com.example.quiz.dto.QuestionDTOReq;
+import com.example.quiz.dto.QuestionDTORes;
 import com.example.quiz.service.QuestionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/Question")
+@RequestMapping(path = "/api/Question")
 public class QuestionController {
 
     @Autowired
     private QuestionService questionService;
 
-
+    private QuestionController(QuestionService questionService){
+        this.questionService=questionService;
+    }
 
     @GetMapping
-    public Iterable<Question> getAll(){
-        return questionService.getAll();
+    public ResponseEntity<Page<QuestionDTORes>> getAll(Pageable pageable){
+        return new ResponseEntity<>(questionService.findAll(pageable), HttpStatus.OK);
     }
 
     @PostMapping
-    public Question save(@RequestBody Question Question){
-        return questionService.save(Question);
+    public ResponseEntity<QuestionDTOReq> save(@Valid @RequestBody QuestionDTOReq QuestionDTOReq){
+        return new ResponseEntity<>(questionService.save(QuestionDTOReq), HttpStatus.OK);
     }
 
-    @GetMapping("{questionId}")
-    public Question findById(@PathVariable("questionId") Integer id){
-        try {
-            return questionService.findById(id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    @GetMapping(path = {"{questionId}"})
+    public ResponseEntity<QuestionDTORes> findById(@PathVariable("questionId") Integer questionId){
+        return new ResponseEntity<>(questionService.findById(questionId), HttpStatus.OK);
     }
 
-    @DeleteMapping("{questionId}")
-    public void deleteById(@PathVariable("questionId") Integer id){
-        try {
-            questionService.deleteById(id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    @DeleteMapping(path = {"{questionId}"})
+    public ResponseEntity<QuestionDTORes> deleteById(@PathVariable("questionId") Integer questionId){
+        return new ResponseEntity<>(questionService.deleteById(questionId), HttpStatus.OK);
     }
 
 
-    @GetMapping("bySubject/{subjectId}")
-    public List<Question> findBySubjectId(@PathVariable("subjectId") Integer id){;
-        try {
-            return questionService.findBySubjectId(id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    @GetMapping(path = {"bySubject/{subjectId}"})
+    public ResponseEntity<List<QuestionDTORes>> findBySubjectId(@PathVariable("subjectId") Integer subjectId){;
+        return new ResponseEntity<>(questionService.findBySubjectId(subjectId), HttpStatus.OK);
     }
 
-    @GetMapping( "byLevel/{levelId}")
-    public List<Question> findByLevelId(@PathVariable("levelId") Integer id){;
-        try {
-            return questionService.findByLevelId(id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    @GetMapping(path = {"byLevel/{levelId}"})
+    public ResponseEntity<List<QuestionDTORes>> findByLevelId(@PathVariable("levelId") Integer levelId){;
+        return new ResponseEntity<>(questionService.findByLevelId(levelId), HttpStatus.OK);
     }
-
 }

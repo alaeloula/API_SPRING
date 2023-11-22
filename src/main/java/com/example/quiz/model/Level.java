@@ -1,6 +1,7 @@
 package com.example.quiz.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.lang.NonNull;
 
@@ -14,12 +15,11 @@ import java.util.Set;
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class Level {
-    //private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NonNull
-    private String description;
+
+    @NonNull private String description;
     @NonNull private int pointMin;
     @NonNull private int pointMax;
 

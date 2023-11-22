@@ -1,0 +1,29 @@
+services:
+  postgresdb:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: alaa1234
+      POSTGRES_DB: quiz
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+  app:
+    ports:
+      - 8080:8080
+    environment:
+          SPRING_APPLICATION_JSON: '{
+            "spring.datasource.url"  : "jdbc:postgresql://postgresdb:5432/quiz",
+            "spring.datasource.username" : "postgres",
+            "spring.datasource.password" : "alaa1234"
+          }'
+    build:
+      context: .
+    container_name: quiz
+    depends_on:
+      - postgresdb
+volumes:
+  db:
+    driver: local

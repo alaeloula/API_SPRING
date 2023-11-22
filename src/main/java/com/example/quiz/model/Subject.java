@@ -19,7 +19,7 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @NonNull
-    private String intitule;
+    private String title;
     @ManyToOne
     private Subject parent;
 

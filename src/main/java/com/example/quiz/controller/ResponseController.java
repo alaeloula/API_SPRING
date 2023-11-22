@@ -1,37 +1,42 @@
 package com.example.quiz.controller;
 
-import com.example.quiz.model.Response;
+import com.example.quiz.dto.ResponseDTO;
 import com.example.quiz.service.ResponseService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 @RestController
-@RequestMapping(path = "/Response")
+@RequestMapping(path = "/api/Response")
 public class ResponseController {
     @Autowired
     private ResponseService responseService;
 
+    private ResponseController(ResponseService ResponseServise){
+        this.responseService=ResponseServise;
+    }
+
+    @GetMapping(path = "{responseId}")
+    public ResponseEntity<ResponseDTO> findById(@PathVariable int responseId) {
+        return new ResponseEntity<>(responseService.findById(responseId), HttpStatus.OK);
+    }
 
     @GetMapping
-    public Iterable<Response> getAll(){
-        return responseService.getAll();
+    public ResponseEntity<List<ResponseDTO>> findAll(){
+        return new ResponseEntity<>(responseService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping
-    public Response save(@RequestBody Response response){
-        return responseService.save(response);
+    public ResponseEntity<ResponseDTO> save(@Valid @RequestBody ResponseDTO ResponseDTO){
+        return new ResponseEntity<>(responseService.save(ResponseDTO), HttpStatus.OK);
     }
 
-    @GetMapping(path = {"{responseId}"})
-    public Response findById(@PathVariable("responseId") Integer id) throws Exception {
-        return responseService.findById(id);
-    }
-
-    @DeleteMapping(path = {"{responseId}"})
-    public void deleteById(@PathVariable("responseId") Integer id) throws Exception{
-        responseService.deleteById(id);
+    @DeleteMapping(path = "{responseId}")
+    public ResponseEntity<ResponseDTO> delete(@PathVariable int responseId){
+        return new ResponseEntity<>(responseService.deleteById(responseId), HttpStatus.OK);
     }
 }

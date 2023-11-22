@@ -28,9 +28,9 @@ public class Question implements Serializable{
     @NonNull private String image;
 
     @ManyToOne
-  @JsonIgnore
+  //@JsonIgnore
     @NonNull private Subject subject;
-  @JsonIgnore
+ // @JsonIgnore
     @ManyToOne
     @NonNull private Level level;
 
