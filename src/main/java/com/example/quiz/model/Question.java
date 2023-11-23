@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -15,23 +16,29 @@ import java.io.Serializable;
 @NoArgsConstructor
 @RequiredArgsConstructor
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Question implements Serializable{
-    private static final long serialVersionUID = 1L;
+public class Question{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @NonNull
-    private int numberOfResponses;
+    @NonNull private int numberOfResponses;
     @NonNull private int numberOfCorrectResponses;
     @NonNull private String questionText;
-    @NonNull private String image;
+    @NonNull private QuestionType type;
 
-    @ManyToOne
-  //@JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id")
     @NonNull private Subject subject;
- // @JsonIgnore
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "level_id")
     @NonNull private Level level;
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Validation> validations;
+
+
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Temporisation> temporisations;
 
 }

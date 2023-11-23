@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/Level")
+@RequestMapping(path = "/level")
 public class LevelController {
 
     @Autowired
