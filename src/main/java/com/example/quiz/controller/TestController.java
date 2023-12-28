@@ -1,8 +1,10 @@
 package com.example.quiz.controller;
 
+import com.example.quiz.dto.QuestionDTORes;
 import com.example.quiz.dto.TestDTO;
 import com.example.quiz.dto.TestDTOReq;
 import com.example.quiz.service.TestService;
+import com.example.quiz.service.QuestionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,8 @@ public class TestController {
 
     @Autowired
     private TestService testService;
+    @Autowired
+    private QuestionService QuestionService;
 
     private TestController(TestService testService){
         this.testService=testService;
@@ -43,4 +47,7 @@ public class TestController {
     public ResponseEntity<TestDTO> delete(@PathVariable int testId){
         return new ResponseEntity<>(testService.deleteById(testId), HttpStatus.OK);
     }
+
+
+
 }

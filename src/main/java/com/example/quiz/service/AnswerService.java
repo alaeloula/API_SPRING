@@ -39,10 +39,11 @@ public class AnswerService implements IAnswer {
     }
 
     @Override
-    public Page<AnswerDTORes> findAll(Pageable pageable) {
-        Page<Answer> answers = answerRepository.findAll(pageable);
-        return answers
-                .map(ans -> modelMapper.map(ans, AnswerDTORes.class));
+    public List<AnswerDTORes> findAll() {
+        List<Answer> answers = answerRepository.findAll();
+        return answers.stream()
+                .map(ans -> modelMapper.map(ans, AnswerDTORes.class))
+                .collect(Collectors.toList());
     }
 
 
@@ -59,7 +60,10 @@ public class AnswerService implements IAnswer {
         Answer answer= modelMapper.map(answerDTOReq, Answer.class);
         Assignment assignment = assignmentRepository.findById(answerDTOReq.getAssignment_id())
                 .orElseThrow(() -> new ResourceNotFoundException("id : " + answerDTOReq.getAssignment_id()));
+        Validation validation = validationRepository.findById(answerDTOReq.getValidation_id())
+                .orElseThrow(() -> new ResourceNotFoundException("id : " + answerDTOReq.getValidation_id()));
         answer.setAssignment(assignment);
+        answer.setValidation(validation);
         answerRepository.save(answer);
         return modelMapper.map(answer, AnswerDTOReq.class);
     }

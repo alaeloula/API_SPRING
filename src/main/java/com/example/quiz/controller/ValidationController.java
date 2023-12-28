@@ -48,4 +48,9 @@ public class ValidationController {
         return new ResponseEntity<>(validationService.deleteById(validationId), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/byQuestion/{questionId}")
+    public ResponseEntity<List<ValidationDTORes>> findByQuestion(@PathVariable int questionId){
+        return new ResponseEntity<>(validationService.findByQuestion(questionId), HttpStatus.OK);
+    }
+
 }

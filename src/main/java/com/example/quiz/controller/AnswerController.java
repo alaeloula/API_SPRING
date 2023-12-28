@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/api/Answer")
 public class AnswerController {
@@ -22,8 +24,8 @@ public class AnswerController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<AnswerDTORes>> getAll(Pageable pageable){
-        return new ResponseEntity<>(answerService.findAll(pageable), HttpStatus.OK);
+    public ResponseEntity<List<AnswerDTORes>> getAll(){
+        return new ResponseEntity<>(answerService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping

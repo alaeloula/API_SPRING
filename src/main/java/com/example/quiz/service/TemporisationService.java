@@ -2,11 +2,13 @@ package com.example.quiz.service;
 
 import com.example.quiz.dto.TemporisationDTOReq;
 import com.example.quiz.dto.TemporisationDTORes;
+import com.example.quiz.dto.TestDTO;
 import com.example.quiz.exception.ResourceNotFoundException;
 import com.example.quiz.interfaces.ITemporisation;
 
 import com.example.quiz.model.Question;
 import com.example.quiz.model.Temporisation;
+
 import com.example.quiz.model.Test;
 import com.example.quiz.repository.QuestionRepository;
 
@@ -82,4 +84,25 @@ public class TemporisationService implements ITemporisation {
     public TemporisationDTOReq update(TemporisationDTOReq temporisationDTOReq) {
         return null;
     }
+
+//    @Override
+//    public List<Question> getQuestionsForQuiz(int id) {
+//        List<Temporisation> temporisations = temporisationRepository.findByTest(id);
+//
+//        List<Question> questions = temporisations.stream()
+//                .map(Temporisation::getQuestion)
+//                .collect(Collectors.toList());
+//
+//        return questions;
+//    }
+public List<TemporisationDTORes> findByTest(int testId) {
+    Test test = testRepository.findById(testId)
+            .orElseThrow(() -> new ResourceNotFoundException("id test : " + testId));
+    List<Temporisation> tmps=temporisationRepository.findByTest(test);
+    return tmps.stream()
+            .map(temp -> modelMapper.map(temp, TemporisationDTORes.class))
+            .collect(Collectors.toList());
+}
+
+
 }

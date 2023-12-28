@@ -13,8 +13,8 @@ import java.time.LocalDate;
 //@RequiredArgsConstructor
 @NoArgsConstructor
 public class AssignementTDOReq {
-    private Integer id;
 
+    private Integer id;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @NotNull(message = "Date end is required")
     private LocalDate dateStart;

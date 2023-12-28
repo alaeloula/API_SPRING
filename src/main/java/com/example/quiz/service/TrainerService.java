@@ -38,8 +38,9 @@ public class TrainerService implements ITrainer {
 
     @Override
     public TrainerDTO save(TrainerDTO TrainerDTO) {
-        Trainer Trainer= modelMapper.map(TrainerDTO, Trainer.class);
-        return modelMapper.map(Trainer, TrainerDTO.class);
+        Trainer trainer= modelMapper.map(TrainerDTO, Trainer.class);
+        trainerRepository.save(trainer);
+        return modelMapper.map(trainer, TrainerDTO.class);
     }
 
     @Override

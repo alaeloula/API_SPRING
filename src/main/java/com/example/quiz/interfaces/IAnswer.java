@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface IAnswer {
-    Page<AnswerDTORes> findAll(Pageable pageable);
+    List<AnswerDTORes> findAll();
     AnswerDTORes findById(int id);
     AnswerDTOReq save(AnswerDTOReq answerDTOReq);
     AnswerDTORes deleteById(int id);

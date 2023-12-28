@@ -83,7 +83,14 @@ public class ValidationService implements IValidation {
     }
 
 
-
+    public List<ValidationDTORes> findByQuestion(int questionId) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new ResourceNotFoundException("id question : " + questionId));
+        List<Validation> tmps=validationRepository.findByQuestion(question);
+        return tmps.stream()
+                .map(temp -> modelMapper.map(temp, ValidationDTORes.class))
+                .collect(Collectors.toList());
+    }
 
 
 }
